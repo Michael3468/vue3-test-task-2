@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TDAuthorization } from '@/components';
+import { TDAuthorization, TDToDoList } from '@/components';
 </script>
 
 <template>
@@ -7,6 +7,8 @@ import { TDAuthorization } from '@/components';
     <div class="container">
       <h1>TODOS</h1>
       <TDAuthorization />
+
+      <TDToDoList />
     </div>
   </main>
 </template>
