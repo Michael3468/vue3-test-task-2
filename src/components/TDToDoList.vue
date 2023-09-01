@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, toRef, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useAuthorizationStore, useTodosStore } from '../stores';
-import { TDLoader } from '.';
+import { TDAddToDo, TDLoader } from '.';
 
 import ClipboardEditOutline from 'vue-material-design-icons/ClipboardEditOutline.vue';
 import type { ITodo } from '@/types';
@@ -15,7 +15,6 @@ interface IEditableTitle {
 }
 
 const editableTitle = ref<IEditableTitle>({ isEditable: false, todo_id: null });
-const newTodoInputRef = ref<HTMLInputElement | null>(null);
 
 const editTodoTitle = (todoId: number) => {
   const newStatus = !editableTitle.value.isEditable;
@@ -64,21 +63,7 @@ watch(
 
 <template>
   <div class="todo-list" :class="authorizationStore.isUserAuthorized ? '' : 'hidden'">
-    <!-- add new TODO input -->
-    <div class="todo-list-new-todo">
-      <input
-        class="todo-list-new-todo__input"
-        type="text"
-        placeholder="add new todo"
-        ref="newTodoInputRef"
-      />
-      <button
-        class="todo-list-new-todo__add-button"
-        @click="todosStore.addToDo(toRef(newTodoInputRef))"
-      >
-        +
-      </button>
-    </div>
+    <TDAddToDo />
 
     <TDLoader :isLoading="todosStore.isLoading" />
 
@@ -144,22 +129,6 @@ watch(
   flex-direction: column;
   gap: 10px 0;
   margin-bottom: 30px;
-}
-
-.todo-list-new-todo {
-  display: flex;
-  gap: 0 10px;
-
-  &__input {
-    width: 100%;
-    padding: 10px;
-    border-radius: $border-radius;
-    border: 1px solid black;
-  }
-
-  &__add-button {
-    width: 50px;
-  }
 }
 
 .todo-list-item {
