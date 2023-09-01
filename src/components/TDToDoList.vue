@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, toRef, watch } from 'vue';
 import { useAuthorizationStore, useTodosStore } from '../stores';
-import ClipboardEditOutline from 'vue-material-design-icons/ClipboardEditOutline.vue';
+import { TDLoader } from '.';
 
+import ClipboardEditOutline from 'vue-material-design-icons/ClipboardEditOutline.vue';
 import type { ITodo } from '@/types';
 
 const authorizationStore = useAuthorizationStore();
@@ -79,10 +80,7 @@ watch(
       </button>
     </div>
 
-    <!-- loader -->
-    <div :class="todosStore.isLoading ? '' : 'hidden'">
-      <h2>Loading...</h2>
-    </div>
+    <TDLoader :isLoading="todosStore.isLoading" />
 
     <!-- TODO list -->
     <div
