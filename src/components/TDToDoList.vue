@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { watch } from 'vue';
 import { useAuthorizationStore, useTodosStore } from '../stores';
-import { TDAddToDo, TDCheckboxStatusButton, TDEditToDoButton, TDLoader } from '.';
+import {
+  TDAddToDo,
+  TDCheckboxStatusButton,
+  TDEditToDoButton,
+  TDLoader,
+  TDRemoveToDoButton,
+} from '.';
 
 const authorizationStore = useAuthorizationStore();
 const todosStore = useTodosStore();
@@ -46,13 +52,7 @@ watch(
 
         <TDCheckboxStatusButton :todo="todo" />
 
-        <!-- remove TODO -->
-        <button
-          class="todo-list-item-tools__remove-button"
-          @click="() => todosStore.removeToDo(todo.id)"
-        >
-          X
-        </button>
+        <TDRemoveToDoButton :todoId="todo.id" />
       </div>
     </div>
   </div>
@@ -99,13 +99,5 @@ watch(
   display: flex;
   align-items: center;
   gap: 0 10px;
-
-  &__remove-button {
-    cursor: pointer;
-  }
-
-  &__remove-button {
-    padding: 7px 10px;
-  }
 }
 </style>

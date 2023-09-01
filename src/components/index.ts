@@ -3,6 +3,7 @@ import TDAuthorization from './TDAuthorization.vue';
 import TDCheckboxStatusButton from './TDCheckboxStatusButton.vue';
 import TDEditToDoButton from './TDEditToDoButton.vue';
 import TDLoader from './TDLoader.vue';
+import TDRemoveToDoButton from './TDRemoveToDoButton.vue';
 import TDToDoList from './TDToDoList.vue';
 
 export {
@@ -11,5 +12,6 @@ export {
   TDCheckboxStatusButton,
   TDEditToDoButton,
   TDLoader,
+  TDRemoveToDoButton,
   TDToDoList,
 };
