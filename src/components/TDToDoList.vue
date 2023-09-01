@@ -20,6 +20,7 @@ interface IEditableTitle {
 const todos = ref<ITodo[] | null>(null);
 const editableTitle = ref<IEditableTitle>({ isEditable: false, todo_id: null });
 const isLoading = ref<boolean>(false);
+const newTodoRef = ref<HTMLInputElement | null>(null);
 
 const fetchTodos = async () => {
   try {
@@ -37,6 +38,28 @@ const fetchTodos = async () => {
   }
 };
 
+const editTodoTitle = (todoId: number) => {
+  const newStatus = !editableTitle.value.isEditable;
+
+  editableTitle.value = { isEditable: newStatus, todo_id: newStatus ? todoId : null };
+};
+
+const addNewToDo = () => {
+  if (newTodoRef.value && authorizationStore.user_id) {
+    const newTodo: ITodo = {
+      userId: authorizationStore.user_id,
+      id: todos.value?.length ? todos.value?.length + 1 : 1,
+      title: newTodoRef.value.value,
+      completed: false,
+    };
+
+    todos.value?.push(newTodo);
+
+    newTodoRef.value.value = '';
+    newTodoRef.value.focus();
+  }
+};
+
 const handleCheckboxChange = (event: Event, todo: ITodo) => {
   const checkbox = event.target as HTMLInputElement;
 
@@ -51,12 +74,6 @@ const handleCheckboxChange = (event: Event, todo: ITodo) => {
     }
     return item;
   });
-};
-
-const editTodoTitle = (todoId: number) => {
-  const newStatus = !editableTitle.value.isEditable;
-
-  editableTitle.value = { isEditable: newStatus, todo_id: newStatus ? todoId : null };
 };
 
 const handleEditTitleKeyDown = (event: KeyboardEvent, todoId: number) => {
@@ -84,10 +101,23 @@ watch(
 
 <template>
   <div class="todo-list" :class="authorizationStore.isUserAuthorized ? '' : 'hidden'">
+    <!-- add new TODO input -->
+    <div class="todo-list-new-todo">
+      <input
+        class="todo-list-new-todo__input"
+        type="text"
+        placeholder="add new todo"
+        ref="newTodoRef"
+      />
+      <button class="todo-list-new-todo__add-button" @click="addNewToDo">+</button>
+    </div>
+
+    <!-- loader -->
     <div :class="isLoading ? '' : 'hidden'">
       <h2>Loading...</h2>
     </div>
 
+    <!-- TODO list -->
     <div
       class="todo-list-item"
       :class="isLoading ? 'hidden' : ''"
@@ -95,10 +125,12 @@ watch(
       :key="todo.id"
     >
       <div class="todo-list-item__info">
+        <!-- TODO title -->
         <p class="todo-list-item__text" :class="isTitleEditable(todo.id) ? 'hidden' : ''">
           {{ todo.title }}
         </p>
 
+        <!-- input for edit TODO title -->
         <input
           class="todo-list-item__edit-input"
           :class="isTitleEditable(todo.id) ? '' : 'hidden'"
@@ -107,7 +139,9 @@ watch(
         />
       </div>
 
+      <!-- TODO buttons -->
       <div class="todo-list-item-tools">
+        <!-- edit TODO button -->
         <div
           class="todo-list-item-tools__edit"
           tabIndex="0"
@@ -116,6 +150,7 @@ watch(
           <ClipboardEditOutline @click="() => editTodoTitle(todo.id)" />
         </div>
 
+        <!-- TODO checkbox status -->
         <input
           class="todo-list-item-tools__status"
           type="checkbox"
@@ -136,6 +171,22 @@ watch(
   flex-direction: column;
   gap: 10px 0;
   margin-bottom: 30px;
+}
+
+.todo-list-new-todo {
+  display: flex;
+  gap: 0 10px;
+
+  &__input {
+    width: 100%;
+    padding: 10px;
+    border-radius: $border-radius;
+    border: 1px solid black;
+  }
+
+  &__add-button {
+    width: 50px;
+  }
 }
 
 .todo-list-item {
