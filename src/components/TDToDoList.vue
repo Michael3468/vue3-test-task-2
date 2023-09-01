@@ -60,6 +60,14 @@ const addNewToDo = () => {
   }
 };
 
+const removeToDo = (todoId: number) => {
+  if (todos.value) {
+    todos.value = todos.value?.filter((todo) => {
+      return todo.id !== todoId;
+    });
+  }
+};
+
 const handleCheckboxChange = (event: Event, todo: ITodo) => {
   const checkbox = event.target as HTMLInputElement;
 
@@ -158,6 +166,11 @@ watch(
           @keydown="(event) => handleCheckboxKeyDown(event, todo)"
           @input="(event) => handleCheckboxChange(event, todo)"
         />
+
+        <!-- remove TODO -->
+        <button class="todo-list-item-tools__remove-button" @click="() => removeToDo(todo.id)">
+          X
+        </button>
       </div>
     </div>
   </div>
@@ -221,13 +234,18 @@ watch(
   align-items: center;
   gap: 0 10px;
 
-  &__edit {
-    margin-top: 7px;
+  &__edit,
+  &__status,
+  &__remove-button {
     cursor: pointer;
   }
 
-  &__status {
-    cursor: pointer;
+  &__edit {
+    margin-top: 7px;
+  }
+
+  &__remove-button {
+    padding: 7px 10px;
   }
 }
 </style>
