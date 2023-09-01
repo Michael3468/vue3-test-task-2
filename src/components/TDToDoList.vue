@@ -1,34 +1,10 @@
 <script setup lang="ts">
 import { watch } from 'vue';
 import { useAuthorizationStore, useTodosStore } from '../stores';
-import { TDAddToDo, TDEditToDoButton, TDLoader } from '.';
-
-import type { ITodo } from '@/types';
+import { TDAddToDo, TDCheckboxStatusButton, TDEditToDoButton, TDLoader } from '.';
 
 const authorizationStore = useAuthorizationStore();
 const todosStore = useTodosStore();
-
-const handleCheckboxChange = (event: Event, todo: ITodo) => {
-  const checkbox = event.target as HTMLInputElement;
-
-  const key = (event as KeyboardEvent).key;
-  if (key === 'Enter') {
-    checkbox.checked = !checkbox.checked;
-  }
-
-  todosStore.todos?.map((item) => {
-    if (item.id === todo.id) {
-      item.completed = checkbox.checked;
-    }
-    return item;
-  });
-};
-
-const handleCheckboxKeyDown = (event: KeyboardEvent, todo: ITodo) => {
-  if (event.key === ' ' || event.key === 'Enter') {
-    handleCheckboxChange(event, todo);
-  }
-};
 
 watch(
   () => authorizationStore.isUserAuthorized,
@@ -44,9 +20,9 @@ watch(
 
     <!-- TODO list -->
     <div
+      v-for="todo in todosStore.todos"
       class="todo-list-item"
       :class="todosStore.isLoading ? 'hidden' : ''"
-      v-for="todo in todosStore.todos"
       :key="todo.id"
     >
       <div class="todo-list-item__info">
@@ -68,14 +44,7 @@ watch(
       <div class="todo-list-item-tools">
         <TDEditToDoButton :id="todo.id" />
 
-        <!-- TODO checkbox status -->
-        <input
-          class="todo-list-item-tools__status"
-          type="checkbox"
-          :checked="todo.completed"
-          @keydown="(event) => handleCheckboxKeyDown(event, todo)"
-          @input="(event) => handleCheckboxChange(event, todo)"
-        />
+        <TDCheckboxStatusButton :todo="todo" />
 
         <!-- remove TODO -->
         <button
@@ -131,7 +100,6 @@ watch(
   align-items: center;
   gap: 0 10px;
 
-  &__status,
   &__remove-button {
     cursor: pointer;
   }
