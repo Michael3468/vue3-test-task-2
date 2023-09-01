@@ -9,10 +9,17 @@ export interface ITodo {
   completed: boolean;
 }
 
+interface IEditableTodo {
+  isEditable: boolean;
+  todo_id: number | null;
+}
+
 export const useTodosStore = defineStore('TodosStore', () => {
   const authorizationStore = useAuthorizationStore();
   const todos = ref<ITodo[] | null>(null);
   const isLoading = ref<boolean>(false);
+
+  const editableTodo = ref<IEditableTodo>({ isEditable: false, todo_id: null });
 
   const fetchTodos = async () => {
     try {
@@ -54,11 +61,17 @@ export const useTodosStore = defineStore('TodosStore', () => {
     }
   };
 
+  const isTodoEditable = (todoId: number) => {
+    return editableTodo.value.isEditable && editableTodo.value.todo_id === todoId;
+  };
+
   return {
     todos,
     isLoading,
+    editableTodo,
     fetchTodos,
     removeToDo,
     addToDo,
+    isTodoEditable,
   };
 });

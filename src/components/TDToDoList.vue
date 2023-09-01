@@ -1,26 +1,12 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { watch } from 'vue';
 import { useAuthorizationStore, useTodosStore } from '../stores';
-import { TDAddToDo, TDLoader } from '.';
+import { TDAddToDo, TDEditToDoButton, TDLoader } from '.';
 
-import ClipboardEditOutline from 'vue-material-design-icons/ClipboardEditOutline.vue';
 import type { ITodo } from '@/types';
 
 const authorizationStore = useAuthorizationStore();
 const todosStore = useTodosStore();
-
-interface IEditableTitle {
-  isEditable: boolean;
-  todo_id: number | null;
-}
-
-const editableTitle = ref<IEditableTitle>({ isEditable: false, todo_id: null });
-
-const editTodoTitle = (todoId: number) => {
-  const newStatus = !editableTitle.value.isEditable;
-
-  editableTitle.value = { isEditable: newStatus, todo_id: newStatus ? todoId : null };
-};
 
 const handleCheckboxChange = (event: Event, todo: ITodo) => {
   const checkbox = event.target as HTMLInputElement;
@@ -38,21 +24,10 @@ const handleCheckboxChange = (event: Event, todo: ITodo) => {
   });
 };
 
-const handleEditTitleKeyDown = (event: KeyboardEvent, todoId: number) => {
-  if (event.key === ' ' || event.key === 'Enter') {
-    event.preventDefault();
-    editTodoTitle(todoId);
-  }
-};
-
 const handleCheckboxKeyDown = (event: KeyboardEvent, todo: ITodo) => {
   if (event.key === ' ' || event.key === 'Enter') {
     handleCheckboxChange(event, todo);
   }
-};
-
-const isTitleEditable = (todoId: number) => {
-  return editableTitle.value.isEditable && editableTitle.value.todo_id === todoId;
 };
 
 watch(
@@ -76,14 +51,14 @@ watch(
     >
       <div class="todo-list-item__info">
         <!-- TODO title -->
-        <p class="todo-list-item__text" :class="isTitleEditable(todo.id) ? 'hidden' : ''">
+        <p class="todo-list-item__text" :class="todosStore.isTodoEditable(todo.id) ? 'hidden' : ''">
           {{ todo.title }}
         </p>
 
         <!-- input for edit TODO title -->
         <input
           class="todo-list-item__edit-input"
-          :class="isTitleEditable(todo.id) ? '' : 'hidden'"
+          :class="todosStore.isTodoEditable(todo.id) ? '' : 'hidden'"
           type="text"
           v-model="todo.title"
         />
@@ -91,14 +66,7 @@ watch(
 
       <!-- TODO buttons -->
       <div class="todo-list-item-tools">
-        <!-- edit TODO button -->
-        <div
-          class="todo-list-item-tools__edit"
-          tabIndex="0"
-          @keydown="(event) => handleEditTitleKeyDown(event, todo.id)"
-        >
-          <ClipboardEditOutline @click="() => editTodoTitle(todo.id)" />
-        </div>
+        <TDEditToDoButton :id="todo.id" />
 
         <!-- TODO checkbox status -->
         <input
@@ -163,14 +131,9 @@ watch(
   align-items: center;
   gap: 0 10px;
 
-  &__edit,
   &__status,
   &__remove-button {
     cursor: pointer;
-  }
-
-  &__edit {
-    margin-top: 7px;
   }
 
   &__remove-button {
