@@ -1,7 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { TDAuthorization } from '@/components';
+</script>
 
 <template>
   <main>
-    <h2>Home View</h2>
+    <div class="container">
+      <h1>TODOS</h1>
+      <TDAuthorization />
+    </div>
   </main>
 </template>
