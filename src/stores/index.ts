@@ -1,3 +1,4 @@
 import { useAuthorizationStore } from './AuthorizationStore';
+import { useTodosStore } from './TodosStore';
 
-export { useAuthorizationStore };
+export { useAuthorizationStore, useTodosStore };

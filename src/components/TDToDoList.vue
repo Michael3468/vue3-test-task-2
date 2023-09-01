@@ -1,71 +1,25 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useAuthorizationStore } from '../stores';
+import { ref, toRef, watch } from 'vue';
+import { useAuthorizationStore, useTodosStore } from '../stores';
 import ClipboardEditOutline from 'vue-material-design-icons/ClipboardEditOutline.vue';
 
-const authorizationStore = useAuthorizationStore();
+import type { ITodo } from '@/types';
 
-interface ITodo {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
+const authorizationStore = useAuthorizationStore();
+const todosStore = useTodosStore();
 
 interface IEditableTitle {
   isEditable: boolean;
   todo_id: number | null;
 }
 
-const todos = ref<ITodo[] | null>(null);
 const editableTitle = ref<IEditableTitle>({ isEditable: false, todo_id: null });
-const isLoading = ref<boolean>(false);
-const newTodoRef = ref<HTMLInputElement | null>(null);
-
-const fetchTodos = async () => {
-  try {
-    isLoading.value = true;
-
-    const response = await fetch(
-      `${import.meta.env.VITE_HOST}/users/${authorizationStore.user_id}/todos`,
-    );
-
-    todos.value = await response.json();
-  } catch (error) {
-    console.log(error);
-  } finally {
-    isLoading.value = false;
-  }
-};
+const newTodoInputRef = ref<HTMLInputElement | null>(null);
 
 const editTodoTitle = (todoId: number) => {
   const newStatus = !editableTitle.value.isEditable;
 
   editableTitle.value = { isEditable: newStatus, todo_id: newStatus ? todoId : null };
-};
-
-const addNewToDo = () => {
-  if (newTodoRef.value && authorizationStore.user_id) {
-    const newTodo: ITodo = {
-      userId: authorizationStore.user_id,
-      id: todos.value?.length ? todos.value?.length + 1 : 1,
-      title: newTodoRef.value.value,
-      completed: false,
-    };
-
-    todos.value?.push(newTodo);
-
-    newTodoRef.value.value = '';
-    newTodoRef.value.focus();
-  }
-};
-
-const removeToDo = (todoId: number) => {
-  if (todos.value) {
-    todos.value = todos.value?.filter((todo) => {
-      return todo.id !== todoId;
-    });
-  }
 };
 
 const handleCheckboxChange = (event: Event, todo: ITodo) => {
@@ -76,7 +30,7 @@ const handleCheckboxChange = (event: Event, todo: ITodo) => {
     checkbox.checked = !checkbox.checked;
   }
 
-  todos.value?.map((item) => {
+  todosStore.todos?.map((item) => {
     if (item.id === todo.id) {
       item.completed = checkbox.checked;
     }
@@ -103,7 +57,7 @@ const isTitleEditable = (todoId: number) => {
 
 watch(
   () => authorizationStore.isUserAuthorized,
-  (isAuthorized) => isAuthorized && fetchTodos(),
+  (isAuthorized) => isAuthorized && todosStore.fetchTodos(),
 );
 </script>
 
@@ -115,21 +69,26 @@ watch(
         class="todo-list-new-todo__input"
         type="text"
         placeholder="add new todo"
-        ref="newTodoRef"
+        ref="newTodoInputRef"
       />
-      <button class="todo-list-new-todo__add-button" @click="addNewToDo">+</button>
+      <button
+        class="todo-list-new-todo__add-button"
+        @click="todosStore.addToDo(toRef(newTodoInputRef))"
+      >
+        +
+      </button>
     </div>
 
     <!-- loader -->
-    <div :class="isLoading ? '' : 'hidden'">
+    <div :class="todosStore.isLoading ? '' : 'hidden'">
       <h2>Loading...</h2>
     </div>
 
     <!-- TODO list -->
     <div
       class="todo-list-item"
-      :class="isLoading ? 'hidden' : ''"
-      v-for="todo in todos"
+      :class="todosStore.isLoading ? 'hidden' : ''"
+      v-for="todo in todosStore.todos"
       :key="todo.id"
     >
       <div class="todo-list-item__info">
@@ -168,7 +127,10 @@ watch(
         />
 
         <!-- remove TODO -->
-        <button class="todo-list-item-tools__remove-button" @click="() => removeToDo(todo.id)">
+        <button
+          class="todo-list-item-tools__remove-button"
+          @click="() => todosStore.removeToDo(todo.id)"
+        >
           X
         </button>
       </div>
