@@ -12,6 +12,7 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       variables: path.resolve(__dirname, 'src/assets/variables.scss'),
+      mixins: path.resolve(__dirname, 'src/assets/mixins.scss'),
     },
   },
 });

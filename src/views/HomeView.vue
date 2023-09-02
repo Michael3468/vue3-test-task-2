@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import router from '@/router';
 import { useAuthorizationStore } from '../stores';
-import { TDToDoList } from '@/components';
+import { TDLogOutButton, TDToDoList } from '@/components';
 import { onMounted } from 'vue';
 
 const authorizationStore = useAuthorizationStore();
@@ -19,19 +19,20 @@ onMounted(() => checkAuth());
 
 <template>
   <main>
-    <div class="container">
+    <div class="container home-view">
       <h1>TODOS</h1>
 
-      <!-- Log Out button -->
-      <button
-        class="authorization-button"
-        :class="authorizationStore.isUserAuthorized ? '' : 'hidden'"
-        @click="authorizationStore.logOut"
-      >
-        Log Out
-      </button>
+      <TDLogOutButton />
 
       <TDToDoList />
     </div>
   </main>
 </template>
+
+<style lang="scss">
+.home-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px 0;
+}
+</style>

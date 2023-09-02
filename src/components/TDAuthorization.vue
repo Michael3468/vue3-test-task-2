@@ -62,7 +62,7 @@ onMounted(() => {
           @input="handleInputChange"
         />
       </div>
-      <p>{{ errorMessage }}</p>
+      <p class="authorization-message">{{ errorMessage }}</p>
       <button class="authorization-button" @click="login">Log in</button>
     </div>
   </div>
@@ -70,6 +70,7 @@ onMounted(() => {
 
 <style lang="scss">
 @import 'variables';
+@import 'mixins';
 
 .authorization {
   min-width: 320px;
@@ -78,7 +79,7 @@ onMounted(() => {
   border-radius: $border-radius;
   margin-left: auto;
   margin-right: auto;
-  padding: 20px 20px 30px 20px;
+  padding: 20px;
 
   &-caption {
     margin-bottom: 20px;
@@ -95,10 +96,12 @@ onMounted(() => {
     border-radius: $border-radius;
   }
 
+  &-message {
+    margin-bottom: 20px;
+  }
+
   &-button {
-    margin-top: 20px;
-    padding: 10px;
-    cursor: pointer;
+    @include authorization-button;
   }
 }
 </style>
