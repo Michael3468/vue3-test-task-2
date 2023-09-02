@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { TDAuthorization } from '@/components';
+</script>
+
 <template>
-  <h2>Login View</h2>
+  <TDAuthorization />
 </template>

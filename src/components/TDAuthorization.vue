@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useAuthorizationStore } from '../stores';
+import router from '@/router';
 
 interface IUser {
   id: number;
@@ -22,6 +23,7 @@ async function login() {
 
     if (user && user.username === password.value) {
       authorizationStore.logIn(user.id);
+      router.push('/');
     } else {
       throw new Error('Email or password is not correct');
     }
@@ -63,15 +65,6 @@ onMounted(() => {
       <p>{{ errorMessage }}</p>
       <button class="authorization-button" @click="login">Log in</button>
     </div>
-
-    <!-- Log Out button -->
-    <button
-      class="authorization-button"
-      :class="authorizationStore.isUserAuthorized ? '' : 'hidden'"
-      @click="authorizationStore.logOut"
-    >
-      Log Out
-    </button>
   </div>
 </template>
 

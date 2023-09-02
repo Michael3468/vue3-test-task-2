@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import { useAuthorizationStore, useTodosStore } from '../stores';
+import { onMounted } from 'vue';
+import { useTodosStore } from '../stores';
 import { TDCheckboxStatusButton, TDEditToDoButton, TDRemoveToDoButton } from '.';
 
-const authorizationStore = useAuthorizationStore();
 const todosStore = useTodosStore();
 
-watch(
-  () => authorizationStore.isUserAuthorized,
-  (isAuthorized) => isAuthorized && todosStore.fetchTodos(),
-);
+onMounted(() => {
+  todosStore.fetchTodos();
+});
 </script>
 
 <template>

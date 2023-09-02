@@ -22,18 +22,20 @@ export const useTodosStore = defineStore('TodosStore', () => {
   const editableTodo = ref<IEditableTodo>({ isEditable: false, todo_id: null });
 
   const fetchTodos = async () => {
-    try {
-      isLoading.value = true;
+    if (authorizationStore.user_id) {
+      try {
+        isLoading.value = true;
 
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST}/users/${authorizationStore.user_id}/todos`,
-      );
+        const response = await fetch(
+          `${import.meta.env.VITE_HOST}/users/${authorizationStore.user_id}/todos`,
+        );
 
-      todos.value = await response.json();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      isLoading.value = false;
+        todos.value = await response.json();
+      } catch (error) {
+        console.log(error);
+      } finally {
+        isLoading.value = false;
+      }
     }
   };
 
