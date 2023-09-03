@@ -46,6 +46,8 @@ export const useTodosStore = defineStore('TodosStore', () => {
       todos.value = todos.value.filter((todo) => {
         return todo.id !== todoId;
       });
+
+      searchedTodos.value = todos.value;
     }
   };
 
