@@ -8,7 +8,7 @@ const newTodoInputRef = ref<HTMLInputElement | null>(null);
 
 <template>
   <div class="add-todo">
-    <input class="add-todo__input" type="text" placeholder="add new todo" ref="newTodoInputRef" />
+    <input class="add-todo__input" type="text" placeholder="Add new todo" ref="newTodoInputRef" />
     <button class="add-todo__add-button" @click="todosStore.addToDo(toRef(newTodoInputRef))">
       +
     </button>
@@ -17,20 +17,17 @@ const newTodoInputRef = ref<HTMLInputElement | null>(null);
 
 <style lang="scss">
 @import 'variables';
+@import 'mixins';
 
 .add-todo {
-  display: flex;
-  gap: 0 10px;
+  @include input-with-separate-button;
 
   &__input {
-    width: 100%;
-    padding: 10px;
-    border-radius: $border-radius;
-    border: 1px solid black;
+    @include input;
   }
 
   &__add-button {
-    width: 50px;
+    @include input-button;
   }
 }
 </style>

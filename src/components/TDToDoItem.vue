@@ -12,7 +12,7 @@ onMounted(() => {
 
 <template>
   <div
-    v-for="todo in todosStore.todos"
+    v-for="todo in todosStore.searchedTodos"
     class="todo-list-item"
     :class="todosStore.isLoading ? 'hidden' : ''"
     :key="todo.id"

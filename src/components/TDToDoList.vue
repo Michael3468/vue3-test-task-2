@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAuthorizationStore, useTodosStore } from '../stores';
-import { TDAddToDo, TDLoader, TDToDoItem } from '.';
+import { TDAddToDo, TDLoader, TDSearchToDo, TDToDoItem } from '.';
 
 const authorizationStore = useAuthorizationStore();
 const todosStore = useTodosStore();
@@ -8,6 +8,8 @@ const todosStore = useTodosStore();
 
 <template>
   <div class="todo-list" :class="authorizationStore.isUserAuthorized ? '' : 'hidden'">
+    <TDSearchToDo />
+
     <TDAddToDo />
 
     <TDLoader :isLoading="todosStore.isLoading" />

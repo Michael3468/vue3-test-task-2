@@ -17,6 +17,7 @@ interface IEditableTodo {
 export const useTodosStore = defineStore('TodosStore', () => {
   const authorizationStore = useAuthorizationStore();
   const todos = ref<ITodo[] | null>(null);
+  const searchedTodos = ref<ITodo[] | null>(null);
   const isLoading = ref<boolean>(false);
 
   const editableTodo = ref<IEditableTodo>({ isEditable: false, todo_id: null });
@@ -31,6 +32,7 @@ export const useTodosStore = defineStore('TodosStore', () => {
         );
 
         todos.value = await response.json();
+        searchedTodos.value = todos.value;
       } catch (error) {
         console.log(error);
       } finally {
@@ -63,6 +65,14 @@ export const useTodosStore = defineStore('TodosStore', () => {
     }
   };
 
+  const searchTodo = (searchTodoInputRef: Ref<HTMLInputElement | null>) => {
+    const searchText = searchTodoInputRef.value;
+
+    if (searchText && todos.value) {
+      searchedTodos.value = todos.value.filter((todo) => todo.title.includes(searchText.value));
+    }
+  };
+
   const isTodoEditable = (todoId: number) => {
     return editableTodo.value.isEditable && editableTodo.value.todo_id === todoId;
   };
@@ -71,9 +81,11 @@ export const useTodosStore = defineStore('TodosStore', () => {
     todos,
     isLoading,
     editableTodo,
+    searchedTodos,
     fetchTodos,
     removeToDo,
     addToDo,
+    searchTodo,
     isTodoEditable,
   };
 });
