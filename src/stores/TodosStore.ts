@@ -16,8 +16,8 @@ interface IEditableTodo {
 
 export const useTodosStore = defineStore('TodosStore', () => {
   const authorizationStore = useAuthorizationStore();
-  const todos = ref<ITodo[] | null>(null);
-  const searchedTodos = ref<ITodo[] | null>(null);
+  const todos = ref<ITodo[]>([]);
+  const searchedTodos = ref<ITodo[]>([]);
   const isLoading = ref<boolean>(false);
 
   const editableTodo = ref<IEditableTodo>({ isEditable: false, todo_id: null });
