@@ -36,7 +36,20 @@ onMounted(() => {
             aria-label="edit todo title"
           />
 
-          <p>{{ formatDate(element.creationTime, 'hh:mm:ss dd/mm/yyyy') }}</p>
+          <p v-if="element.createdTime">
+            {{
+              element.createdTime
+                ? `created: ${formatDate(element.createdTime, 'hh:mm:ss dd/mm/yyyy')}`
+                : ''
+            }}
+          </p>
+          <p v-if="element.expirationTime">
+            {{
+              element.expirationTime
+                ? `expiration: ${formatDate(element.expirationTime, 'hh:mm:ss dd/mm/yyyy')}`
+                : ''
+            }}
+          </p>
         </div>
 
         <!-- buttons -->

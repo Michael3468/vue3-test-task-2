@@ -1,5 +1,6 @@
 import { ref, type Ref } from 'vue';
 import { defineStore } from 'pinia';
+// eslint-disable-next-line import/no-cycle
 import { useAuthorizationStore } from '.';
 
 export interface ITodo {
@@ -7,7 +8,8 @@ export interface ITodo {
   id: number;
   title: string;
   completed: boolean;
-  creationTime: Date;
+  createdTime: Date;
+  expirationTime: Date;
 }
 
 interface IEditableTodo {
@@ -35,6 +37,7 @@ export const useTodosStore = defineStore('TodosStore', () => {
         todos.value = await response.json();
         searchedTodos.value = todos.value;
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
       } finally {
         isLoading.value = false;
@@ -52,20 +55,26 @@ export const useTodosStore = defineStore('TodosStore', () => {
     }
   };
 
-  const addToDo = (newTodoInputRef: Ref<HTMLInputElement | null>) => {
-    if (newTodoInputRef.value && authorizationStore.user_id) {
+  const addToDo = (newTodoInputRef: Ref<HTMLInputElement | null>, expirationTime: Date) => {
+    if (newTodoInputRef.value && authorizationStore.user_id && todos.value) {
+      const todosLength = todos.value.length;
+
       const newTodo: ITodo = {
         userId: authorizationStore.user_id,
-        id: todos.value?.length ? todos.value?.length + 1 : 1,
+        id: todosLength ? todosLength + 1 : 1,
         title: newTodoInputRef.value.value,
         completed: false,
-        creationTime: new Date(),
+        createdTime: new Date(),
+        expirationTime,
       };
 
-      todos.value?.push(newTodo);
+      todos.value.push(newTodo);
 
-      newTodoInputRef.value.value = '';
-      newTodoInputRef.value.focus();
+      const inputValueRef = newTodoInputRef.value;
+      if (inputValueRef) {
+        inputValueRef.value = '';
+        inputValueRef.focus();
+      }
     }
   };
 

@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@vue/eslint-config-airbnb-with-typescript": "^7.0.0",
+    "@vuepic/vue-datepicker": "^6.0.3",
     "pinia": "^2.1.6",
     "vue": "^3.3.4",
     "vue-material-design-icons": "^5.2.0",
