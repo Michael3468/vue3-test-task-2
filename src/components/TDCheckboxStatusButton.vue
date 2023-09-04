@@ -13,14 +13,14 @@ const todosStore = useTodosStore();
 const handleCheckboxChange = (event: Event, todo: ITodo) => {
   const checkbox = event.target as HTMLInputElement;
 
-  const key = (event as KeyboardEvent).key;
+  const { key } = event as KeyboardEvent;
   if (key === 'Enter') {
     checkbox.checked = !checkbox.checked;
   }
 
   todosStore.todos?.map((item) => {
     if (item.id === todo.id) {
-      item.completed = checkbox.checked;
+      return { ...item, completed: checkbox.checked };
     }
     return item;
   });
@@ -38,6 +38,7 @@ const handleCheckboxKeyDown = (event: KeyboardEvent, todo: ITodo) => {
     class="checkbox-status-button"
     type="checkbox"
     :checked="todo.completed"
+    aria-label="todo status"
     @keydown="(event) => handleCheckboxKeyDown(event, todo)"
     @input="(event) => handleCheckboxChange(event, todo)"
   />

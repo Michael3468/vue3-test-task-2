@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import router from '@/router';
-import { useAuthorizationStore } from '../stores';
-import { TDLogOutButton, TDToDoList } from '@/components';
 import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { TDLogOutButton, TDToDoList } from '@/components';
+import { useAuthorizationStore } from '../stores';
 
 const authorizationStore = useAuthorizationStore();
+const router = useRouter();
 
 const checkAuth = () => {
   authorizationStore.checkAuthorization();

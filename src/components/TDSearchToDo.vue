@@ -17,13 +17,14 @@ const handleClearButtonClick = () => {
 <template>
   <div class="search-todo">
     <input
+      ref="searchTodoInputRef"
       class="search-todo__input"
       type="text"
       placeholder="Search todo"
-      ref="searchTodoInputRef"
+      aria-label="search todo"
       @input="todosStore.searchTodo(toRef(searchTodoInputRef))"
     />
-    <button class="search-todo__clear-button" @click="handleClearButtonClick">X</button>
+    <button class="search-todo__clear-button" type="button" @click="handleClearButtonClick">X</button>
   </div>
 </template>
 

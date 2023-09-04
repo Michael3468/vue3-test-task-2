@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useTodosStore } from '../stores';
 import ClipboardEditOutline from 'vue-material-design-icons/ClipboardEditOutline.vue';
+import { useTodosStore } from '../stores';
 
 interface Props {
   id: number;

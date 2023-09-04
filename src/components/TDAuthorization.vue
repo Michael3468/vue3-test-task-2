@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useAuthorizationStore } from '../stores';
 import router from '@/router';
+import { useAuthorizationStore } from '../stores';
 
 interface IUser {
   id: number;
@@ -29,6 +29,7 @@ async function login() {
     }
   } catch (error) {
     errorMessage.value = (error as Error).message;
+    // eslint-disable-next-line no-console
     console.log(error);
   }
 }
@@ -48,22 +49,24 @@ onMounted(() => {
       <h2 class="authorization-caption">authorization</h2>
       <div class="authorization-inputs">
         <input
+          v-model="email"
           class="authorization-input"
           type="email"
           placeholder="email"
-          v-model="email"
+          aria-label="email"
           @input="handleInputChange"
         />
         <input
+          v-model="password"
           class="authorization-input"
           type="password"
           placeholder="use username as password"
-          v-model="password"
+          aria-label="password"
           @input="handleInputChange"
         />
       </div>
       <p class="authorization-message">{{ errorMessage }}</p>
-      <button class="authorization-button" @click="login">Log in</button>
+      <button class="authorization-button" type="button" @click="login">Log in</button>
     </div>
   </div>
 </template>

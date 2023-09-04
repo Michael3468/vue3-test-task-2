@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useAuthorizationStore, useTodosStore } from '../stores';
+// eslint-disable-next-line import/no-cycle
 import { TDAddToDo, TDLoader, TDSearchToDo, TDToDoItem } from '.';
 
 const authorizationStore = useAuthorizationStore();
@@ -12,7 +13,7 @@ const todosStore = useTodosStore();
 
     <TDAddToDo />
 
-    <TDLoader :isLoading="todosStore.isLoading" />
+    <TDLoader :is-loading="todosStore.isLoading" />
 
     <TDToDoItem />
   </div>

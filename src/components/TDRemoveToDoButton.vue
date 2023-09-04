@@ -11,7 +11,9 @@ const todosStore = useTodosStore();
 </script>
 
 <template>
-  <button class="remove-todo-button" @click="() => todosStore.removeToDo(todoId)">X</button>
+  <button class="remove-todo-button" type="button" @click="() => todosStore.removeToDo(todoId)">
+    X
+  </button>
 </template>
 
 <style lang="scss">

@@ -2,6 +2,7 @@
 import { onMounted } from 'vue';
 import draggable from 'vuedraggable';
 import { useTodosStore } from '../stores';
+// eslint-disable-next-line import/no-cycle
 import { TDCheckboxStatusButton, TDEditToDoButton, TDRemoveToDoButton } from '.';
 
 import { formatDate } from '../libs';
@@ -14,9 +15,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <draggable class="todo-list-items" v-model="todosStore.searchedTodos" item-key="id">
+  <draggable v-model="todosStore.searchedTodos" class="todo-list-items" item-key="id">
     <template #item="{ element }">
-      <div class="todo-list-item" :class="todosStore.isLoading ? 'hidden' : ''" :key="element.id">
+      <div :key="element.id" class="todo-list-item" :class="todosStore.isLoading ? 'hidden' : ''">
         <div class="todo-list-item__info">
           <!-- title -->
           <p
@@ -28,10 +29,11 @@ onMounted(() => {
 
           <!-- input for edit title -->
           <input
+            v-model="element.title"
             class="todo-list-item__info-edit-input"
             :class="todosStore.isTodoEditable(element.id) ? '' : 'hidden'"
             type="text"
-            v-model="element.title"
+            aria-label="edit todo title"
           />
 
           <p>{{ formatDate(element.creationTime, 'hh:mm:ss dd/mm/yyyy') }}</p>
@@ -43,7 +45,7 @@ onMounted(() => {
 
           <TDCheckboxStatusButton :todo="element" />
 
-          <TDRemoveToDoButton :todoId="element.id" />
+          <TDRemoveToDoButton :todo-id="element.id" />
         </div>
       </div>
     </template>

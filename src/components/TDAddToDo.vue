@@ -8,8 +8,18 @@ const newTodoInputRef = ref<HTMLInputElement | null>(null);
 
 <template>
   <div class="add-todo">
-    <input class="add-todo__input" type="text" placeholder="Add new todo" ref="newTodoInputRef" />
-    <button class="add-todo__add-button" @click="todosStore.addToDo(toRef(newTodoInputRef))">
+    <input
+      ref="newTodoInputRef"
+      class="add-todo__input"
+      type="text"
+      placeholder="Add new todo"
+      aria-label="add todo"
+    />
+    <button
+      class="add-todo__add-button"
+      type="button"
+      @click="todosStore.addToDo(toRef(newTodoInputRef))"
+    >
       +
     </button>
   </div>

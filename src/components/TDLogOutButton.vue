@@ -14,6 +14,7 @@ const handleLogOutClick = () => {
   <button
     class="log-out-button"
     :class="authorizationStore.isUserAuthorized ? '' : 'hidden'"
+    type="button"
     @click="handleLogOutClick"
   >
     Log Out
