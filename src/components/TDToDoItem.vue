@@ -4,6 +4,8 @@ import draggable from 'vuedraggable';
 import { useTodosStore } from '../stores';
 import { TDCheckboxStatusButton, TDEditToDoButton, TDRemoveToDoButton } from '.';
 
+import { formatDate } from '../libs';
+
 const todosStore = useTodosStore();
 
 onMounted(() => {
@@ -31,6 +33,8 @@ onMounted(() => {
             type="text"
             v-model="element.title"
           />
+
+          <p>{{ formatDate(element.creationTime, 'hh:mm:ss dd/mm/yyyy') }}</p>
         </div>
 
         <!-- buttons -->

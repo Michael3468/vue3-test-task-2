@@ -7,6 +7,7 @@ export interface ITodo {
   id: number;
   title: string;
   completed: boolean;
+  creationTime: Date;
 }
 
 interface IEditableTodo {
@@ -58,6 +59,7 @@ export const useTodosStore = defineStore('TodosStore', () => {
         id: todos.value?.length ? todos.value?.length + 1 : 1,
         title: newTodoInputRef.value.value,
         completed: false,
+        creationTime: new Date(),
       };
 
       todos.value?.push(newTodo);
