@@ -30,7 +30,7 @@ export const useTodosStore = defineStore('TodosStore', () => {
     setInterval(() => {
       const now = Date.now();
 
-      searchedTodos.value = todos.value.map((todo) => {
+      searchedTodos.value = searchedTodos.value.map((todo) => {
         if (todo.expirationTime && todo.expirationTime.getTime() < now) {
           return { ...todo, isExpired: true };
         }
@@ -85,6 +85,7 @@ export const useTodosStore = defineStore('TodosStore', () => {
       };
 
       todos.value.push(newTodo);
+      searchedTodos.value = todos.value;
 
       const inputValueRef = newTodoInputRef.value;
       if (inputValueRef) {
