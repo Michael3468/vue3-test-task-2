@@ -6,6 +6,7 @@ import '@vuepic/vue-datepicker/dist/main.css';
 
 const todosStore = useTodosStore();
 const newTodoInputRef = ref<HTMLInputElement | null>(null);
+const inputValueRef = ref<string>('');
 const addTodoButtonRef = ref<HTMLButtonElement | null>(null);
 const date = ref();
 const VueDatePickerRef = ref();
@@ -13,6 +14,7 @@ const VueDatePickerRef = ref();
 const handleAddButtonClick = (inputRef: Ref<HTMLInputElement | null>, expDate: Date) => {
   todosStore.addToDo(toRef(inputRef), expDate);
   VueDatePickerRef.value.clearValue();
+  inputValueRef.value = '';
   newTodoInputRef.value?.focus();
 };
 
@@ -26,6 +28,7 @@ const handleClose = () => {
     <div class="add-todo__input-and-button">
       <input
         ref="newTodoInputRef"
+        v-model="inputValueRef"
         class="add-todo__input"
         type="text"
         placeholder="Add new todo"
@@ -36,6 +39,7 @@ const handleClose = () => {
         ref="addTodoButtonRef"
         class="add-todo__add-todo"
         type="button"
+        :disabled="!inputValueRef"
         @click="handleAddButtonClick(toRef(newTodoInputRef), date)"
       >
         +
