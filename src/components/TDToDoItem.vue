@@ -36,14 +36,19 @@ onMounted(() => {
             aria-label="edit todo title"
           />
 
-          <p v-if="element.createdTime">
+          <p v-if="element.createdTime" class="todo-list-item__time">
             {{
               element.createdTime
                 ? `created: ${formatDate(element.createdTime, 'hh:mm:ss dd/mm/yyyy')}`
                 : ''
             }}
           </p>
-          <p v-if="element.expirationTime">
+          <p
+            v-if="element.expirationTime"
+            ref="expiredTimeRef"
+            class="todo-list-item__time"
+            :class="element.isExpired ? 'todo-list-item__time_expired' : ''"
+          >
             {{
               element.expirationTime
                 ? `expiration: ${formatDate(element.expirationTime, 'hh:mm:ss dd/mm/yyyy')}`
@@ -98,6 +103,15 @@ onMounted(() => {
     &-edit-input {
       font-size: 1.2rem;
       margin-top: 7px;
+    }
+  }
+
+  &__time {
+    line-height: 1rem;
+
+    &_expired {
+      color: red;
+      font-weight: bold;
     }
   }
 }

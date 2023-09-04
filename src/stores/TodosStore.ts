@@ -10,6 +10,7 @@ export interface ITodo {
   completed: boolean;
   createdTime: Date;
   expirationTime: Date;
+  isExpired: boolean;
 }
 
 interface IEditableTodo {
@@ -25,6 +26,19 @@ export const useTodosStore = defineStore('TodosStore', () => {
 
   const editableTodo = ref<IEditableTodo>({ isEditable: false, todo_id: null });
 
+  const startCheckingExpiration = () => {
+    setInterval(() => {
+      const now = Date.now();
+
+      searchedTodos.value = todos.value.map((todo) => {
+        if (todo.expirationTime && todo.expirationTime.getTime() < now) {
+          return { ...todo, isExpired: true };
+        }
+        return todo;
+      });
+    }, 1000);
+  };
+
   const fetchTodos = async () => {
     if (authorizationStore.user_id) {
       try {
@@ -36,6 +50,7 @@ export const useTodosStore = defineStore('TodosStore', () => {
 
         todos.value = await response.json();
         searchedTodos.value = todos.value;
+        startCheckingExpiration();
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
@@ -66,6 +81,7 @@ export const useTodosStore = defineStore('TodosStore', () => {
         completed: false,
         createdTime: new Date(),
         expirationTime,
+        isExpired: false,
       };
 
       todos.value.push(newTodo);
