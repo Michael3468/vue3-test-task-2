@@ -13,11 +13,16 @@
     "cm": "cz"
   },
   "dependencies": {
+    "@vue/eslint-config-airbnb-with-typescript": "^7.0.0",
+    "@vuepic/vue-datepicker": "^6.0.3",
+    "pinia": "^2.1.6",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.4"
+    "vue-material-design-icons": "^5.2.0",
+    "vue-router": "^4.2.4",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.3.2",
+    "@rushstack/eslint-patch": "^1.3.3",
     "@tsconfig/node18": "^18.2.0",
     "@types/node": "^18.17.0",
     "@vitejs/plugin-vue": "^4.2.3",

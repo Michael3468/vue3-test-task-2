@@ -12,6 +12,7 @@ import { RouterView } from 'vue-router';
 @import 'variables';
 
 .content {
+  min-height: inherit;
   background-color: $color;
 }
 </style>
