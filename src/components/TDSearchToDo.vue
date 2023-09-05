@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRef } from 'vue';
+import { ref } from 'vue';
 import { useTodosStore } from '@/stores';
 
 const todosStore = useTodosStore();
@@ -9,7 +9,7 @@ const handleClearButtonClick = () => {
   if (searchTodoInputRef.value) {
     searchTodoInputRef.value.value = '';
     searchTodoInputRef.value.focus();
-    todosStore.searchTodo(toRef(searchTodoInputRef));
+    todosStore.searchTodo(searchTodoInputRef.value.value);
   }
 };
 </script>
@@ -22,9 +22,11 @@ const handleClearButtonClick = () => {
       type="text"
       placeholder="Search todo"
       aria-label="search todo"
-      @input="todosStore.searchTodo(toRef(searchTodoInputRef))"
+      @input="todosStore.searchTodo(searchTodoInputRef?.value ? searchTodoInputRef.value : '')"
     />
-    <button class="search-todo__clear-button" type="button" @click="handleClearButtonClick">X</button>
+    <button class="search-todo__clear-button" type="button" @click="handleClearButtonClick">
+      X
+    </button>
   </div>
 </template>
 

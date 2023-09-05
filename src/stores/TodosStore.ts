@@ -23,6 +23,7 @@ export const useTodosStore = defineStore('TodosStore', () => {
   const todos = ref<ITodo[]>([]);
   const searchedTodos = ref<ITodo[]>([]);
   const isLoading = ref<boolean>(false);
+  const sText = ref<string>('');
 
   const editableTodo = ref<IEditableTodo>({ isEditable: false, todo_id: null });
 
@@ -60,13 +61,20 @@ export const useTodosStore = defineStore('TodosStore', () => {
     }
   };
 
+  const searchTodo = (searchText: string) => {
+    if (searchText && todos.value) {
+      sText.value = searchText;
+      searchedTodos.value = todos.value.filter((todo) => todo.title.includes(searchText));
+    }
+  };
+
   const removeToDo = (todoId: number) => {
     if (todos.value) {
       todos.value = todos.value.filter((todo) => {
         return todo.id !== todoId;
       });
 
-      searchedTodos.value = todos.value;
+      searchTodo(sText.value);
     }
   };
 
@@ -85,21 +93,13 @@ export const useTodosStore = defineStore('TodosStore', () => {
       };
 
       todos.value.push(newTodo);
-      searchedTodos.value = todos.value;
+      searchTodo(sText.value);
 
       const inputValueRef = newTodoInputRef.value;
       if (inputValueRef) {
         inputValueRef.value = '';
         inputValueRef.focus();
       }
-    }
-  };
-
-  const searchTodo = (searchTodoInputRef: Ref<HTMLInputElement | null>) => {
-    const searchText = searchTodoInputRef.value;
-
-    if (searchText && todos.value) {
-      searchedTodos.value = todos.value.filter((todo) => todo.title.includes(searchText.value));
     }
   };
 
