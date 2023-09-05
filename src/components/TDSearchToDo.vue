@@ -22,7 +22,7 @@ const handleClearButtonClick = () => {
       type="text"
       placeholder="Search todo"
       aria-label="search todo"
-      @input="todosStore.searchTodo(searchTodoInputRef?.value ? searchTodoInputRef.value : '')"
+      @input="todosStore.searchTodo(searchTodoInputRef?.value ?? '')"
     />
     <button class="search-todo__clear-button" type="button" @click="handleClearButtonClick">
       X

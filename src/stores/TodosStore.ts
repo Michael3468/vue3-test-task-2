@@ -62,7 +62,7 @@ export const useTodosStore = defineStore('TodosStore', () => {
   };
 
   const searchTodo = (searchText: string) => {
-    if (searchText && todos.value) {
+    if (todos.value) {
       sText.value = searchText;
       searchedTodos.value = todos.value.filter((todo) => todo.title.includes(searchText));
     }
