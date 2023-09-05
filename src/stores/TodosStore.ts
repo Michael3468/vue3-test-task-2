@@ -92,8 +92,14 @@ export const useTodosStore = defineStore('TodosStore', () => {
         isExpired: false,
       };
 
-      todos.value.push(newTodo);
-      searchTodo(sText.value);
+      const isTodoExist = todos.value.filter((todo) => todo.title === newTodo.title).length > 0;
+      if (!isTodoExist) {
+        todos.value.push(newTodo);
+        searchTodo(sText.value);
+      } else {
+        // eslint-disable-next-line no-alert
+        alert(`Todo with title "${newTodo.title}" already exist`);
+      }
 
       const inputValueRef = newTodoInputRef.value;
       if (inputValueRef) {
